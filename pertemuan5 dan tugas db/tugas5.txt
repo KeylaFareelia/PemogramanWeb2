@@ -1,0 +1,62 @@
+mysql -u root -p
+
+CREATE DATABASE dbpuskesmas;
+
+use dbpuskesmas;
+
+CREATE TABLE klurahan(
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> nama_kelurahan VARCHAR(100) NOT NULL
+    -> );
+
+
+CREATE TABLE unit_kerja(
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> kode_unit VARCHAR(50) NOT NULL,
+    -> nama_unit VARCHAR(100) NOT NULL,
+    -> keterangan VARCHAR(255));
+
+
+
+CREATE TABLE pasien(
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> kode VARCHAR(20)NOT NULL,
+    -> nama VARCHAR(45) NOT NULL,
+    -> tmp_lahir VARCHAR(30) NOT NULL,
+    -> tgl_lahir DATE,
+    -> gender CHAR(1),
+    -> email VARCHAR(100),
+    -> alamat VARCHAR(100),
+    -> klurahan_id INT,
+    -> FOREIGN KEY(klurahan_id)
+    -> REFERENCES klurahan(id));
+
+
+
+CREATE TABLE paramedik(
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> nama VARCHAR(20) NOT NULL,
+    -> gender CHAR(1) NULL,
+    -> tmp_lahir VARCHAR(30),
+    -> tgl_lahir DATE,
+    -> kategori ENUM("Dokter", "Perawat", "Bidan"),
+    -> telpon VARCHAR(20),
+    -> alamat VARCHAR(100),
+    -> unitkerja_id INT,
+    -> FOREIGN KEY(unitkerja_id)
+    -> REFERENCES unit_kerja(id));
+
+
+
+CREATE TABLE periksa(
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> tanggal DATE,
+    -> berat DOUBLE,
+    -> tinggi DOUBLE,
+    -> tensi VARCHAR(20),
+    -> keterangan VARCHAR (100),
+    -> pasien_id INT,
+    -> dokter_id INT,
+    -> FOREIGN KEY(pasien_id) REFERENCES pasien(id),
+    -> FOREIGN KEY(dokter_id) REFERENCES paramedik(id)
+    -> );
